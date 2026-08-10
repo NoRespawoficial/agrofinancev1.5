@@ -6,10 +6,11 @@ import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   LayoutGrid, Leaf, Boxes, Landmark, FileText, Settings,
-  Menu, X, FileDown, Trash2, Bot, Upload, LogOut, User, Pencil, AlertTriangle, Calculator, ClipboardCheck,
+  Menu, X, FileDown, Trash2, Bot, Upload, LogOut, User, ClipboardCheck, Calculator, AlertTriangle, Pencil,
 } from 'lucide-react'
 import { clearAnalysesFromFirestore, clearChatHistoryFromFirestore } from '@/lib/firebaseService'
 import { useAuth } from '@/contexts/AuthContext'
+import { useChat } from '@/contexts/ChatContext'
 import { generateExecutivePdfReport } from '@/lib/pdfGenerator'
 
 const BP = process.env.NEXT_PUBLIC_BASE_PATH || ''
@@ -48,6 +49,7 @@ function Brand({ light = false }: { light?: boolean }) {
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const { openChat } = useChat()
   const activeTab = searchParams?.get('tab') || ''
 
   const isActive = (m: { path: string; tab?: string }) => {
@@ -80,8 +82,14 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             <Link
               key={item.label}
               href={item.href}
-              onClick={onNavigate}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+              onClick={(e) => {
+                if (item.href === '/copilot/') {
+                  e.preventDefault()
+                  openChat()
+                }
+                if (onNavigate) onNavigate()
+              }}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all min-h-[44px] ${
                 active
                   ? 'bg-white/12 text-white shadow-[inset_3px_0_0_0_#16A864]'
                   : 'text-white/55 hover:text-white hover:bg-white/8'
@@ -126,7 +134,7 @@ function TopNavTabs() {
           <Link
             key={link.label}
             href={link.href}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] rounded-lg text-xs font-semibold transition-all ${
               active
                 ? 'bg-[rgba(90,190,145,0.12)] text-[#137C53] border border-[rgba(90,190,145,0.25)]'
                 : 'text-[rgba(80,108,92,0.5)] hover:text-[#13301F] hover:bg-[rgba(90,190,145,0.06)]'
@@ -360,7 +368,7 @@ export default function DashboardShell({ children, onExport }: DashboardShellPro
           </div>
         </header>
 
-        <main className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-[1400px] mx-auto">
+        <main className="px-4 sm:px-6 lg:px-8 pt-6 pb-24 sm:pt-8 sm:pb-28 max-w-[1400px] mx-auto">
           {children}
         </main>
       </div>

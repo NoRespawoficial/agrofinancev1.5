@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Leaf, User, Building2, Mail, ArrowRight, Loader2 } from 'lucide-react'
+import { Leaf, User, Building2, Mail, ArrowRight, Loader2, ArrowLeft } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
 const BP = process.env.NEXT_PUBLIC_BASE_PATH || ''
@@ -43,7 +43,14 @@ export default function LoginPage() {
   if (loading) return null
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F4F6F2] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#F4F6F2] px-4 relative">
+      <button 
+        onClick={() => router.push('/')}
+        className="absolute top-6 left-6 flex items-center gap-2 text-sm font-semibold text-[rgba(80,108,92,0.65)] hover:text-[#137C53] min-h-[44px] px-3 rounded-xl hover:bg-[rgba(90,190,145,0.08)] transition-all"
+      >
+        <ArrowLeft className="w-4 h-4" /> Volver
+      </button>
+
       <div className="w-full max-w-md">
 
         {/* Logo */}

@@ -9,9 +9,9 @@ import {
   MessageSquare, ClipboardList, PackagePlus, Check, Loader2, Square, X,
   FolderOpen, FileSpreadsheet, FilePdf, Zap
 } from 'lucide-react'
-import DashboardShell from '@/components/layout/DashboardShell'
-import KapiIcon from '@/components/mascot/KapiIcon'
+import CapybaraBot from '@/components/mascot/CapybaraBot'
 import { cooperativa, certificarCooperativa } from '@/lib/pilotEngine'
+import { useChat } from '@/contexts/ChatContext'
 import { saveAnalysisToFirestore } from '@/lib/firebaseService'
 import {
   saveChatMessageToFirestore, getChatHistoryFromFirestore,
@@ -357,8 +357,9 @@ const TIPO_LABEL: Record<string, string> = {
   almacen: 'Almacén', cosecha: 'Cosecha', envio: 'Envío', insumo: 'Insumo', otro: 'Otro',
 }
 
-export default function CopilotPage() {
+export default function CopilotDrawer() {
   const router = useRouter()
+  const { isChatOpen, closeChat } = useChat()
   const [hasData, setHasData] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -644,8 +645,27 @@ export default function CopilotPage() {
   }
 
   return (
-    <DashboardShell>
-      <input type="file" ref={imageInputRef} accept="image/*" className="hidden" onChange={handleImageSelect} />
+    <AnimatePresence>
+      {isChatOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeChat}
+            className="fixed inset-0 bg-black/30 z-[100]"
+          />
+          
+          {/* Drawer */}
+          <motion.div
+            initial={{ x: '100%', opacity: 0.5 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: '100%', opacity: 0 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-y-0 right-0 w-full sm:w-[480px] z-[101] bg-[#F4F6F2] shadow-2xl flex flex-col border-l border-[rgba(90,190,145,0.2)]"
+          >
+            <input type="file" ref={imageInputRef} accept="image/*" className="hidden" onChange={handleImageSelect} />
       <input
         type="file"
         ref={dataFileInputRef}
@@ -654,98 +674,27 @@ export default function CopilotPage() {
         className="hidden"
         onChange={handleDataFileSelect}
       />
-      <div className="flex-1 flex w-full">
-        <div className="flex w-full gap-6">
+      <div className="flex-1 flex flex-col h-full overflow-hidden p-4">
 
-          {/* Left sidebar — Context */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="hidden lg:flex flex-col gap-4 w-72 flex-shrink-0"
-          >
-            {/* Mascot card */}
-            <div className="glass-card rounded-3xl p-6 text-center">
-              <span className="mx-auto mb-4 w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(90,190,145,0.12)' }}>
-                <KapiIcon size={34} color="#137C53" />
-              </span>
-              <div className="text-sm font-bold text-[#13301F] mb-1">Kapi</div>
-              <div className="text-xs text-[rgba(80,108,92,0.5)] mb-3">AI de Climate Intelligence</div>
-              <div className="flex items-center justify-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#137C53] animate-pulse" />
-                <span className="text-xs text-[#137C53] font-semibold">En línea · Listo</span>
-              </div>
-            </div>
-
-            {/* Quick stats */}
-            <div className="glass-card rounded-3xl p-5">
-              <div className="text-xs font-semibold text-[rgba(80,108,92,0.5)] uppercase tracking-widest mb-4">Contexto Activo</div>
-              <div className="space-y-3">
-                {[
-                  { icon: Leaf, label: 'Huella total', value: '21,267 tCO₂e' },
-                  { icon: TrendingDown, label: 'Reducción YoY', value: '-8%' },
-                  { icon: BarChart3, label: 'Score ESG', value: '87/100' },
-                  { icon: FileText, label: 'Reportes', value: '3 activos' },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-[rgba(90,190,145,0.08)] flex items-center justify-center">
-                      <item.icon className="w-3.5 h-3.5 text-[#137C53]" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="text-xs text-[rgba(80,108,92,0.5)]">{item.label}</div>
-                      <div className="text-xs font-bold text-[#13301F]">{item.value}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Quick shortcuts */}
-            <div className="glass-card rounded-3xl p-5">
-              <div className="text-xs font-semibold text-[rgba(80,108,92,0.5)] uppercase tracking-widest mb-4">Acceso rápido</div>
-              <div className="space-y-2">
-                {[
-                  { label: 'Ver Dashboard', href: '/dashboard', icon: BarChart3 },
-                  { label: 'Subir datos', href: '/upload', icon: Globe2 },
-                ].map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-[rgba(80,108,92,0.6)] hover:text-[#137C53] hover:bg-[rgba(90,190,145,0.06)] transition-all"
-                  >
-                    <link.icon className="w-3.5 h-3.5" />
-                    {link.label}
-                    <ArrowRight className="w-3 h-3 ml-auto" />
-                  </a>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Chat Area */}
-          <div className="flex-1 flex flex-col min-h-0">
-
-            {/* Chat header */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="glass-card rounded-2xl px-5 py-4 mb-4 flex items-center gap-3"
-            >
-              <span className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ background: '#0F3D2C' }}>
-                <KapiIcon size={20} color="#FBF4D6" />
-              </span>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-[#13301F]">Kapi · AI Copilot ESG</span>
-                  <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[rgba(90,190,145,0.12)] border border-[rgba(90,190,145,0.2)]">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#137C53] animate-pulse" />
-                    <span className="text-[10px] font-semibold text-[#137C53]">En línea</span>
-                  </div>
+        {/* Chat header (Drawer style) */}
+        <div className="glass-card rounded-2xl px-5 py-3 mb-4 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-3">
+            <span className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ background: '#0F3D2C' }}>
+              <span className="text-white text-xs">🌱</span>
+            </span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-bold text-[#13301F]">Kapi Copilot</span>
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[rgba(90,190,145,0.12)] border border-[rgba(90,190,145,0.2)]">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#137C53] animate-pulse" />
                 </div>
-                <p className="text-xs text-[rgba(80,108,92,0.5)]">Conectado a tus datos ESG · Responde en tiempo real</p>
               </div>
-            </motion.div>
-
-
+            </div>
+          </div>
+          <button onClick={closeChat} className="p-2 rounded-xl text-[rgba(80,108,92,0.5)] hover:bg-[rgba(90,190,145,0.1)] transition-colors">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
             {/* Banner explicativo del modo registro */}
             <AnimatePresence>
@@ -780,8 +729,8 @@ export default function CopilotPage() {
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} gap-3`}
                 >
                   {msg.role === 'ai' && (
-                    <div className="flex-shrink-0 mt-1 w-8 h-8 rounded-full flex items-center justify-center" style={{ background: '#0F3D2C' }}>
-                      <KapiIcon size={17} color="#FBF4D6" />
+                    <div className="flex-shrink-0 mt-1">
+                      <CapybaraBot size="sm" mood="idle" showGlow={false} />
                     </div>
                   )}
                   <div className={`max-w-[75%] ${msg.role === 'ai' ? 'ai-bubble' : 'user-bubble'} px-4 py-3 text-xs leading-relaxed`}>
@@ -826,8 +775,8 @@ export default function CopilotPage() {
                     exit={{ opacity: 0, y: 10 }}
                     className="flex justify-start gap-3"
                   >
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: '#0F3D2C' }}>
-                      <KapiIcon size={17} color="#FBF4D6" />
+                    <div className="flex-shrink-0 mt-1">
+                      <CapybaraBot size="sm" mood="idle" showGlow={false} />
                     </div>
                     <div className="ai-bubble px-4 py-3 flex items-center gap-1.5">
                       {[0, 0.2, 0.4].map((delay, i) => (
@@ -1021,11 +970,12 @@ export default function CopilotPage() {
             </motion.div>
 
             <p className="text-center text-[10px] text-[rgba(80,108,92,0.25)] mt-2">
-              Kapi puede cometer errores. Verifica información crítica en tu dashboard ESG.
+              Kapi puede cometer errores. Verifica información crítica.
             </p>
           </div>
-        </div>
-      </div>
-    </DashboardShell>
+        </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   )
 }
