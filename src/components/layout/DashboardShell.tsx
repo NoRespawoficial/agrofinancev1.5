@@ -11,7 +11,6 @@ import {
 import { clearAnalysesFromFirestore, clearChatHistoryFromFirestore } from '@/lib/firebaseService'
 import { useAuth } from '@/contexts/AuthContext'
 import { useChat } from '@/contexts/ChatContext'
-import { generateExecutivePdfReport } from '@/lib/pdfGenerator'
 
 const BP = process.env.NEXT_PUBLIC_BASE_PATH || ''
 
@@ -188,7 +187,7 @@ export default function DashboardShell({ children, onExport }: DashboardShellPro
     if (onExport) {
       onExport()
     } else {
-      generateExecutivePdfReport()
+      window.print()
     }
   }
 
@@ -206,7 +205,7 @@ export default function DashboardShell({ children, onExport }: DashboardShellPro
   return (
     <div className="min-h-screen bg-[#F4F6F2]">
       {/* Sidebar fijo (desktop) */}
-      <aside className="hidden lg:flex flex-col fixed inset-y-0 left-0 w-64 z-40"
+      <aside className="hidden lg:flex flex-col fixed inset-y-0 left-0 w-64 z-40 print:hidden"
         style={{ background: 'linear-gradient(180deg, #0F3D2C 0%, #0B2E21 100%)' }}>
         <Suspense fallback={null}><SidebarContent /></Suspense>
       </aside>
@@ -233,9 +232,9 @@ export default function DashboardShell({ children, onExport }: DashboardShellPro
       </AnimatePresence>
 
       {/* Columna de contenido */}
-      <div className="lg:pl-64">
+      <div className="lg:pl-64 print:pl-0 print:w-full">
         {/* Top bar */}
-        <header className="sticky top-0 z-30 h-[68px] bg-white/85 backdrop-blur-xl border-b border-[rgba(90,190,145,0.15)]">
+        <header className="sticky top-0 z-30 h-[68px] bg-white/85 backdrop-blur-xl border-b border-[rgba(90,190,145,0.15)] print:hidden">
           <div className="h-full px-4 sm:px-6 flex items-center gap-3">
             <button
               onClick={() => setDrawerOpen(true)}
@@ -365,8 +364,18 @@ export default function DashboardShell({ children, onExport }: DashboardShellPro
           </div>
         </header>
 
-        <main className="px-4 sm:px-6 lg:px-8 pt-6 pb-[120px] sm:pt-8 max-w-[1400px] mx-auto">
-          {children}
+        <main className="px-4 sm:px-6 lg:px-8 pt-6 pb-[120px] sm:pt-8 max-w-[1400px] mx-auto print:w-full print:max-w-none print:p-0 print:pt-4">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={pathname}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
 

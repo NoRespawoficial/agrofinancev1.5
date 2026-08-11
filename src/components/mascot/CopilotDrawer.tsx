@@ -641,10 +641,10 @@ export default function CopilotDrawer() {
           
           {/* Drawer */}
           <motion.div
-            initial={{ x: '100%', opacity: 0.5 }}
+            initial={{ x: '100%', opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: '100%', opacity: 0 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            transition={{ type: 'spring', damping: 26, stiffness: 220, mass: 0.8 }}
             className="fixed inset-y-0 right-0 w-full sm:w-[480px] z-[101] bg-[#F4F6F2] shadow-2xl flex flex-col border-l border-[rgba(90,190,145,0.2)]"
           >
             <input type="file" ref={imageInputRef} accept="image/*" className="hidden" onChange={handleImageSelect} />

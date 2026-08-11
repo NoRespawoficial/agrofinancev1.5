@@ -92,7 +92,7 @@ export default function PlanReduccionPage() {
         </div>
 
         {/* Meta comprometida con el banco */}
-        <div className="rounded-2xl border border-[rgba(80,108,92,0.15)] bg-white p-5 mb-6">
+        <div className="rounded-2xl border border-[rgba(80,108,92,0.15)] bg-white p-5 mb-6 print:break-inside-avoid print:border-[rgba(80,108,92,0.4)]">
           <div className="flex items-center justify-between flex-wrap gap-3 mb-3">
             <div>
               <span className="text-[11px] font-semibold tracking-wide text-[rgba(80,108,92,0.6)] uppercase">
@@ -127,7 +127,7 @@ export default function PlanReduccionPage() {
         </div>
 
         {/* Export */}
-        <div className="flex items-center justify-end gap-2 mb-3">
+        <div className="flex items-center justify-end gap-2 mb-3 print:hidden">
           <button
             onClick={exportarCSV}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-[rgba(80,108,92,0.2)] text-[#13301F] hover:bg-[rgba(80,108,92,0.05)] transition-colors"
@@ -143,7 +143,7 @@ export default function PlanReduccionPage() {
         </div>
 
         {/* Tabla de acciones */}
-        <div className="rounded-2xl border border-[rgba(80,108,92,0.15)] bg-white overflow-hidden">
+        <div className="rounded-2xl border border-[rgba(80,108,92,0.15)] bg-white overflow-hidden print:break-inside-avoid">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[rgba(80,108,92,0.1)] text-left text-[11px] font-semibold tracking-wide text-[rgba(80,108,92,0.55)] uppercase">
@@ -164,7 +164,7 @@ export default function PlanReduccionPage() {
                   <tr
                     key={a.id}
                     onClick={() => toggle(a.id)}
-                    className={`border-b border-[rgba(80,108,92,0.08)] last:border-0 cursor-pointer transition-colors ${
+                    className={`border-b border-[rgba(80,108,92,0.08)] last:border-0 cursor-pointer transition-colors print:break-inside-avoid ${
                       activa ? 'bg-emerald-50/60' : 'hover:bg-[rgba(80,108,92,0.03)]'
                     }`}
                   >

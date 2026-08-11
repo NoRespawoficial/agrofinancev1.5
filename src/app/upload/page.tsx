@@ -429,42 +429,78 @@ export default function UploadPage() {
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="bg-slate-900 text-white rounded-3xl p-12 text-center shadow-2xl relative overflow-hidden"
+              className="bg-white rounded-3xl p-8 sm:p-12 shadow-2xl border border-slate-100 relative overflow-hidden text-left"
             >
-              <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-500/40 rounded-2xl flex items-center justify-center mx-auto mb-6 text-emerald-400">
-                <Calculator className="w-8 h-8 animate-spin" />
+              {/* Encabezado del Escáner */}
+              <div className="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center animate-pulse shrink-0 border border-emerald-100">
+                    <Calculator className="w-7 h-7" />
+                  </div>
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-[10px] font-bold uppercase tracking-wider mb-2">
+                      <Sparkles className="w-3.5 h-3.5" /> Procesando con Kapi AI
+                    </div>
+                    <AnimatePresence mode="wait">
+                      <motion.h3
+                        key={scanIndex}
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        className="text-lg font-bold text-slate-800"
+                      >
+                        {scanMessages[scanIndex]}
+                      </motion.h3>
+                    </AnimatePresence>
+                  </div>
+                </div>
+                <div className="text-right hidden sm:block">
+                  <div className="text-3xl font-black text-emerald-600">{progress}%</div>
+                  <div className="text-xs text-slate-400 font-medium uppercase tracking-widest mt-1">Extrayendo Datos</div>
+                </div>
               </div>
 
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-semibold mb-4">
-                <Sparkles className="w-3.5 h-3.5" /> Motor Kapi AI Activo
+              {/* Grid de Esqueletos Animados */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {[1, 2, 3].map((item) => (
+                  <div key={item} className="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <div className="h-4 w-24 bg-slate-200 rounded-md animate-pulse" />
+                      <div className="h-8 w-8 bg-slate-200 rounded-xl animate-pulse" />
+                    </div>
+                    <div className="h-10 w-32 bg-slate-200 rounded-lg animate-pulse" />
+                    <div className="h-3 w-4/5 bg-slate-200 rounded-md animate-pulse" />
+                  </div>
+                ))}
               </div>
 
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={scanIndex}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="text-xl font-bold text-white mb-2"
-                >
-                  {scanMessages[scanIndex]}
-                </motion.p>
-              </AnimatePresence>
+              {/* Tabla de Factura Esqueleto */}
+              <div className="border border-slate-100 rounded-2xl overflow-hidden mb-6">
+                <div className="bg-slate-50 p-4 border-b border-slate-100 flex gap-4">
+                  <div className="h-4 w-1/4 bg-slate-200 rounded animate-pulse" />
+                  <div className="h-4 w-1/4 bg-slate-200 rounded animate-pulse" />
+                  <div className="h-4 w-1/4 bg-slate-200 rounded animate-pulse" />
+                </div>
+                <div className="p-4 space-y-4 bg-white">
+                  <div className="flex gap-4">
+                    <div className="h-4 w-1/3 bg-slate-100 rounded animate-pulse" />
+                    <div className="h-4 w-1/2 bg-slate-100 rounded animate-pulse" />
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="h-4 w-1/4 bg-slate-100 rounded animate-pulse" />
+                    <div className="h-4 w-2/3 bg-slate-100 rounded animate-pulse" />
+                  </div>
+                </div>
+              </div>
 
-              <p className="text-slate-400 text-sm mb-8">
-                Aplicando factores oficiales SEIN (0.198 kg CO₂e/kWh) y Diésel B5 (2.69 kg CO₂e/L)
-              </p>
-
-              <div className="w-full bg-slate-800 rounded-full h-3 overflow-hidden max-w-md mx-auto mb-3">
+              {/* Barra de progreso inferior (Mobile fallback) */}
+              <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden sm:hidden">
                 <motion.div
-                  className="h-full rounded-full bg-emerald-400"
+                  className="h-full rounded-full bg-emerald-500"
                   animate={{ width: `${progress}%` }}
                   transition={{ ease: 'easeOut' }}
                 />
               </div>
-              <p className="text-xs text-slate-500">
-                Paso {Math.min(scanIndex + 1, scanMessages.length)} de {scanMessages.length}
-              </p>
             </motion.div>
           )}
 
