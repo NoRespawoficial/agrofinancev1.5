@@ -23,12 +23,9 @@ const EMPRESA = {
 
 const navItems = [
   { label: 'Dashboard', href: '/dashboard/', icon: LayoutGrid, match: { path: '/dashboard' } },
-  { label: 'Huella de Carbono', href: '/analisis/?tab=huella', icon: Leaf, match: { path: '/analisis' } },
-  { label: 'Plan de reducción', href: '/plan-reduccion/', icon: ClipboardCheck, match: { path: '/plan-reduccion' } },
-  { label: 'Financiamiento Verde', href: '/analisis/?tab=financiamiento', icon: Landmark, match: { path: '/analisis', tab: 'financiamiento' } },
-  { label: '¿A qué crédito accedo?', href: '/financiamiento/', icon: Calculator, match: { path: '/financiamiento' } },
-  { label: 'AI Copilot Kapi', href: '/copilot/', icon: Bot, match: { path: '/copilot' } },
-  { label: 'Reportes', href: '/reportes/', icon: FileText, match: { path: '/reportes' } },
+  { label: 'Inventario GHG', href: '/analisis/?tab=huella', icon: Leaf, match: { path: '/analisis' } },
+  { label: 'Estrategia Climática', href: '/plan-reduccion/', icon: ClipboardCheck, match: { path: '/plan-reduccion' } },
+  { label: 'AI Copilot', href: '/copilot/', icon: Bot, match: { path: '/copilot' } },
   { label: 'Configuración', href: '/configuracion/', icon: Settings, match: { path: '/configuracion' } },
 ]
 
@@ -368,7 +365,7 @@ export default function DashboardShell({ children, onExport }: DashboardShellPro
           </div>
         </header>
 
-        <main className="px-4 sm:px-6 lg:px-8 pt-6 pb-24 sm:pt-8 sm:pb-28 max-w-[1400px] mx-auto">
+        <main className="px-4 sm:px-6 lg:px-8 pt-6 pb-[120px] sm:pt-8 max-w-[1400px] mx-auto">
           {children}
         </main>
       </div>

@@ -3,40 +3,36 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Leaf, User, Building2, Mail, ArrowRight, Loader2, ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Loader2, ArrowRight } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
 const BP = process.env.NEXT_PUBLIC_BASE_PATH || ''
+
+// Simple SVG icon for Google to look modern
+const GoogleIcon = () => (
+  <svg className="w-5 h-5" viewBox="0 0 24 24">
+    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+  </svg>
+)
 
 export default function LoginPage() {
   const { user, loading, login } = useAuth()
   const router = useRouter()
 
-  const [nombre, setNombre] = useState('')
-  const [empresa, setEmpresa] = useState('')
-  const [email, setEmail] = useState('')
   const [submitting, setSubmitting] = useState(false)
-  const [errors, setErrors] = useState<Record<string, string>>({})
 
   useEffect(() => {
     if (!loading && user) router.replace('/dashboard/')
   }, [user, loading, router])
 
-  const validate = () => {
-    const e: Record<string, string> = {}
-    if (!nombre.trim()) e.nombre = 'Ingresa tu nombre completo'
-    if (!empresa.trim()) e.empresa = 'Ingresa el nombre de tu empresa'
-    if (!email.trim() || !email.includes('@')) e.email = 'Ingresa un correo válido'
-    setErrors(e)
-    return Object.keys(e).length === 0
-  }
-
-  const handleSubmit = async (ev: React.FormEvent) => {
-    ev.preventDefault()
-    if (!validate()) return
+  const handleGoogleLogin = async () => {
     setSubmitting(true)
     await new Promise(r => setTimeout(r, 600))
-    login(nombre.trim(), empresa.trim(), email.trim())
+    // Simulamos que Google nos devuelve estos datos por defecto para el MVP
+    login('Miguel Ríofrío', 'Chavín de Huántar S.A.C.', 'miguel@chavin.pe')
     router.replace('/dashboard/')
   }
 
@@ -52,7 +48,6 @@ export default function LoginPage() {
       </button>
 
       <div className="w-full max-w-md">
-
         {/* Logo */}
         <motion.div
           initial={{ opacity: 0, y: -16 }}
@@ -65,7 +60,7 @@ export default function LoginPage() {
           <h1 className="text-2xl font-black text-[#13301F] tracking-tight">AgroFinance</h1>
           <p className="text-xs font-semibold tracking-[0.18em] text-[#137C53] uppercase mt-0.5">Carbon Intelligence</p>
           <p className="text-sm text-[rgba(80,108,92,0.65)] mt-3 text-center">
-            Ingresa tus datos para acceder a tu panel ESG
+            Inicia sesión para acceder a tu panel ESG
           </p>
         </motion.div>
 
@@ -74,88 +69,35 @@ export default function LoginPage() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.08 }}
-          className="bg-white rounded-3xl border border-[rgba(90,190,145,0.15)] shadow-[0_8px_40px_rgba(16,40,28,0.08)] p-8"
+          className="bg-white rounded-3xl border border-[rgba(90,190,145,0.15)] shadow-[0_8px_40px_rgba(16,40,28,0.08)] p-8 text-center"
         >
-          <form onSubmit={handleSubmit} noValidate className="space-y-5">
-
-            <Field
-              label="Nombre completo"
-              icon={<User className="w-4 h-4" />}
-              type="text"
-              placeholder="Ej. Miguel Ríofrío"
-              value={nombre}
-              onChange={setNombre}
-              error={errors.nombre}
-            />
-            <Field
-              label="Empresa / Cooperativa"
-              icon={<Building2 className="w-4 h-4" />}
-              type="text"
-              placeholder="Ej. Chavín de Huántar S.A.C."
-              value={empresa}
-              onChange={setEmpresa}
-              error={errors.empresa}
-            />
-            <Field
-              label="Correo electrónico"
-              icon={<Mail className="w-4 h-4" />}
-              type="email"
-              placeholder="correo@empresa.pe"
-              value={email}
-              onChange={setEmail}
-              error={errors.email}
-            />
-
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-2xl bg-gradient-to-r from-[#1A6B45] to-[#137C53] text-white font-bold text-sm shadow-[0_4px_16px_rgba(19,124,83,0.25)] hover:brightness-105 active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed mt-2"
-            >
-              {submitting
-                ? <><Loader2 className="w-4 h-4 animate-spin" /> Ingresando…</>
-                : <><Leaf className="w-4 h-4" /> Ingresar al panel <ArrowRight className="w-4 h-4" /></>
-              }
-            </button>
-          </form>
+          <button
+            onClick={handleGoogleLogin}
+            disabled={submitting}
+            className="w-full flex items-center justify-center gap-3 py-3.5 rounded-2xl bg-white border-2 border-gray-100 text-[#13301F] font-bold text-sm hover:bg-gray-50 hover:border-gray-200 active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed mb-4 min-h-[44px]"
+          >
+            {submitting ? (
+              <><Loader2 className="w-5 h-5 animate-spin text-[#137C53]" /> Conectando...</>
+            ) : (
+              <><GoogleIcon /> Continuar con Google</>
+            )}
+          </button>
+          
+          <div className="relative flex items-center py-2 mb-4">
+            <div className="flex-grow border-t border-[rgba(90,190,145,0.15)]"></div>
+            <span className="flex-shrink-0 mx-4 text-xs font-semibold text-[rgba(80,108,92,0.4)]">Single Sign-On (SSO)</span>
+            <div className="flex-grow border-t border-[rgba(90,190,145,0.15)]"></div>
+          </div>
+          
+          <p className="text-[11px] text-[rgba(80,108,92,0.6)] leading-relaxed">
+            Al continuar, AgroFinance obtendrá tu nombre y correo corporativo bajo estrictos estándares de seguridad y confidencialidad.
+          </p>
         </motion.div>
 
         <p className="text-center text-[11px] text-[rgba(80,108,92,0.45)] mt-6">
           Campaña 2025-2026 · Datos protegidos por sesión de usuario
         </p>
       </div>
-    </div>
-  )
-}
-
-function Field({
-  label, icon, type, placeholder, value, onChange, error,
-}: {
-  label: string
-  icon: React.ReactNode
-  type: string
-  placeholder: string
-  value: string
-  onChange: (v: string) => void
-  error?: string
-}) {
-  return (
-    <div>
-      <label className="block text-xs font-semibold text-[#13301F] mb-1.5">{label}</label>
-      <div className={`flex items-center gap-2.5 px-3.5 py-3 rounded-xl border bg-[#F7FAF7] transition-all ${
-        error
-          ? 'border-red-300 bg-red-50'
-          : 'border-[rgba(90,190,145,0.2)] focus-within:border-[#137C53] focus-within:bg-white'
-      }`}>
-        <span className={`flex-shrink-0 ${error ? 'text-red-400' : 'text-[rgba(80,108,92,0.4)]'}`}>{icon}</span>
-        <input
-          type={type}
-          placeholder={placeholder}
-          value={value}
-          onChange={e => onChange(e.target.value)}
-          className="flex-1 bg-transparent text-sm text-[#13301F] placeholder-[rgba(80,108,92,0.35)] outline-none"
-        />
-      </div>
-      {error && <p className="text-[11px] text-red-500 mt-1 ml-1">{error}</p>}
     </div>
   )
 }

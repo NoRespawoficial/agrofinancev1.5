@@ -50,7 +50,7 @@ export default function PlanReduccionPage() {
   const empezarDeCero = () => setSeleccionadas(new Set())
 
   const exportarCSV = () => {
-    const header = ['Acción', 'Categoría', 'Alcance', 'Reducción (tCO2e)', '% de la huella', 'Inversión', 'Seleccionada']
+    const header = ['Acción', 'Categoría', 'Alcance', 'Reducción (tCO2e)', '% de la huella', 'Inversión Neta (Sin IGV)', 'Seleccionada']
     const rows = acciones.map((a) => [
       a.titulo, a.categoria, `Alcance ${a.scope}`, fmtTon(reduccionTon(a, totalTon)),
       fmtPct(reduccionPct(a, totalTon)), a.inversionLabel, seleccionadas.has(a.id) ? 'Sí' : 'No',
@@ -150,7 +150,7 @@ export default function PlanReduccionPage() {
                 <th className="px-4 py-3 w-10" />
                 <th className="px-2 py-3">Acción</th>
                 <th className="px-2 py-3">Reducción</th>
-                <th className="px-2 py-3">Inversión</th>
+                <th className="px-2 py-3">Inversión Neta (Sin IGV)</th>
                 <th className="px-2 py-3">Alcance</th>
                 <th className="px-4 py-3 text-right">Periodo</th>
               </tr>
