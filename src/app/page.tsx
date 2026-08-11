@@ -19,3 +19,6 @@ export default function HomePage() {
 
   return <ReferenceLandingShell styleCss={styleCss} bodyHtml={bodyHtml} scriptJs={scriptJs} />
 }
+
+// Force cache invalidation to reflect public/reference-landing.html updates
+export const dynamic = 'force-dynamic';

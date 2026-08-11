@@ -16,7 +16,7 @@ const pricingData = [
   {
     tier: 'Corporativo',
     price: 'US$ 199/mes',
-    subtitle: 'Ideal para agroexportadoras.',
+    subtitle: 'Ideal para agroexportadoras. (Importe neto, sin IGV)',
     features: ['Lector automático de XML SUNAT', 'Huella Scope 1, 2 y 3', 'AI Copilot (Kapi) activo', 'Simulación de Tasa SLL'],
     buttonText: 'Probar Corporativo',
     buttonClass: 'bg-[#137C53] text-white hover:bg-[#0F6543] shadow-md border border-transparent',
@@ -26,7 +26,7 @@ const pricingData = [
   {
     tier: 'Enterprise',
     price: 'Personalizado',
-    subtitle: 'Ideal para corporaciones.',
+    subtitle: 'Ideal para corporaciones. (Importes netos, sin IGV)',
     features: ['Integración API con ERP', 'Auditoría ISO 14064', 'Conexión directa con comités bancarios', 'Soporte 24/7'],
     buttonText: 'Contactar Ventas',
     buttonClass: 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50',
