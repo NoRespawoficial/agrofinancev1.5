@@ -639,13 +639,13 @@ export default function CopilotDrawer() {
             className="fixed inset-0 bg-black/30 z-[100]"
           />
           
-          {/* Drawer */}
+          {/* Drawer / Floating Window */}
           <motion.div
-            initial={{ x: '100%', opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: '100%', opacity: 0 }}
-            transition={{ type: 'spring', damping: 26, stiffness: 220, mass: 0.8 }}
-            className="fixed inset-y-0 right-0 w-full sm:w-[480px] z-[101] bg-[#F4F6F2] shadow-2xl flex flex-col border-l border-[rgba(90,190,145,0.2)]"
+            initial={{ opacity: 0, y: 40, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.96 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 25 }}
+            className="fixed inset-y-0 sm:top-24 sm:bottom-6 right-0 sm:right-6 w-full sm:w-[440px] z-[101] bg-white/85 backdrop-blur-md shadow-2xl flex flex-col sm:rounded-3xl border border-gray-200/50 overflow-hidden"
           >
             <input type="file" ref={imageInputRef} accept="image/*" className="hidden" onChange={handleImageSelect} />
       <input
@@ -704,6 +704,7 @@ export default function CopilotDrawer() {
             <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2" style={{ maxHeight: 'calc(100vh - 340px)' }}>
               {messages.map((msg, i) => (
                 <motion.div
+                  layout
                   key={i}
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -752,6 +753,7 @@ export default function CopilotDrawer() {
               <AnimatePresence>
                 {isTyping && (
                   <motion.div
+                    layout
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
