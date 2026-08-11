@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import DashboardShell from '@/components/layout/DashboardShell'
+import ImpactToggle from '@/components/ui/ImpactToggle'
 import TerminoTooltip from '@/components/ui/TerminoTooltip'
 import { getLatestAnalysisFromFirestore, saveAnalysisToFirestore } from '@/lib/firebaseService'
 import { exportarPDF, type ExportData } from '@/lib/exports'
@@ -236,6 +237,9 @@ export default function DashboardPage() {
         </KpiCard>
       </motion.div>
 
+      {/* Toggle Impacto AgroFinance */}
+      <ImpactToggle />
+
       {/* Chart + Compliance */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
         {/* Evolución mensual */}
@@ -357,7 +361,7 @@ function KpiCard({ label, children }: { label: string; children: React.ReactNode
       variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 20 } } }}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      className="bg-white rounded-2xl border border-[rgba(90,190,145,0.12)] p-5 shadow-[0_2px_16px_rgba(90,110,95,0.06)]"
+      className="group bg-white rounded-2xl border border-[rgba(90,190,145,0.12)] p-5 shadow-[0_2px_16px_rgba(90,110,95,0.06)] hover:bg-emerald-50/50 hover:shadow-[0_0_20px_rgba(16,185,129,0.1)] transition-all duration-300"
     >
       <div className="text-[11px] font-semibold uppercase tracking-wider text-[rgba(80,108,92,0.5)] mb-2">{label}</div>
       {children}

@@ -85,13 +85,13 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                 }
                 if (onNavigate) onNavigate()
               }}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all min-h-[44px] ${
+              className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 min-h-[44px] ${
                 active
                   ? 'bg-white/12 text-white shadow-[inset_3px_0_0_0_#16A864]'
-                  : 'text-white/55 hover:text-white hover:bg-white/8'
+                  : 'text-white/55 hover:text-white hover:bg-emerald-500/20 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]'
               }`}
             >
-              <item.icon className="w-[18px] h-[18px] flex-shrink-0" />
+              <item.icon className={`w-[18px] h-[18px] flex-shrink-0 transition-colors duration-300 ${active ? 'text-emerald-400' : 'group-hover:text-emerald-400'}`} />
               <span className="flex-1">{item.label}</span>
               {item.badge && (
                 <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-[#16A864] text-white tracking-wide">
@@ -234,7 +234,7 @@ export default function DashboardShell({ children, onExport }: DashboardShellPro
       {/* Columna de contenido */}
       <div className="lg:pl-64 print:pl-0 print:w-full">
         {/* Top bar */}
-        <header className="sticky top-0 z-30 h-[68px] bg-white/85 backdrop-blur-xl border-b border-[rgba(90,190,145,0.15)] print:hidden">
+        <header className="sticky top-0 z-50 h-[68px] bg-white/70 backdrop-blur-md border-b border-gray-100 print:hidden transition-all duration-300">
           <div className="h-full px-4 sm:px-6 flex items-center gap-3">
             <button
               onClick={() => setDrawerOpen(true)}
