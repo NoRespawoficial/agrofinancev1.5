@@ -407,9 +407,18 @@ export default function AnalisisPage() {
                   </p>
                 </div>
               )}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <motion.div
+                initial="hidden"
+                animate="show"
+                variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.15 } } }}
+                className="grid grid-cols-1 lg:grid-cols-3 gap-4"
+              >
                 {displayScopes.map((s) => (
-                  <div key={s.id} className="glass-card rounded-3xl p-6 flex flex-col">
+                  <motion.div
+                    key={s.id}
+                    variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 20 } } }}
+                    className="glass-card rounded-3xl p-6 flex flex-col"
+                  >
                     <div className="flex items-start gap-4">
                       <MiniDonut value={s.pct} color={s.color} />
                       <div className="min-w-0 flex-1">
@@ -438,9 +447,9 @@ export default function AnalisisPage() {
                         ))}
                       </ul>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
 
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <div className="glass-card rounded-3xl p-6 lg:col-span-2">
@@ -467,7 +476,13 @@ export default function AnalisisPage() {
                     <Search className="w-3 h-3 text-[#137C53]" />
                     Haz clic en una fila para ver de dónde sale cada cifra <span className="text-[#137C53] font-semibold">(trazabilidad)</span>
                   </p>
-                  <div className="overflow-x-auto">
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.5, ease: 'easeOut' }}
+                    className="overflow-x-auto"
+                  >
                     <table className="w-full text-sm min-w-[480px]">
                       <thead>
                         <tr className="text-left text-[11px] uppercase tracking-wide text-[rgba(80,108,92,0.5)] border-b border-[rgba(90,190,145,0.1)]">
@@ -506,7 +521,7 @@ export default function AnalisisPage() {
                         ))}
                       </tbody>
                     </table>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
 
@@ -568,9 +583,14 @@ export default function AnalisisPage() {
 
         {/* CTA a Kapi */}
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-          <button onClick={openChat} className="btn-secondary text-sm flex items-center justify-center gap-2 py-3">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={openChat}
+            className="btn-secondary text-sm flex items-center justify-center gap-2 py-3"
+          >
             <FileText className="w-4 h-4" />Preguntar a Kapi sobre estos datos<ArrowRight className="w-4 h-4" />
-          </button>
+          </motion.button>
         </div>
       </div>
 

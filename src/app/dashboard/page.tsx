@@ -188,9 +188,14 @@ export default function DashboardPage() {
 
 
       {/* KPI cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+      <motion.div
+        initial="hidden"
+        animate="show"
+        variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.15 } } }}
+        className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6"
+      >
         {/* Huella total */}
-        <KpiCard label="Huella total" delay={0}>
+        <KpiCard label="Huella total">
           <div className="text-3xl font-black text-[#13301F]">{hasData ? fmt(KPI.huellaTotal) : '0'}<span className="text-base font-bold text-[rgba(80,108,92,0.45)] ml-1 flex items-center">tCO₂e
 <div className="relative group inline-block ml-1">
   <HelpCircle className="w-4 h-4 text-[rgba(80,108,92,0.45)] cursor-help" />
@@ -206,13 +211,13 @@ export default function DashboardPage() {
         </KpiCard>
 
         {/* Intensidad */}
-        <KpiCard label="Intensidad promedio" delay={0.06}>
+        <KpiCard label="Intensidad promedio">
           <div className="text-3xl font-black text-[#13301F]">{hasData ? KPI.intensidad.toFixed(2) : '0.00'}<span className="text-base font-bold text-[rgba(80,108,92,0.45)] ml-1">kgCO₂e/kg</span></div>
           <div className="text-xs text-[rgba(80,108,92,0.6)] mt-3">Benchmark sector: <strong className="text-[#13301F]">{KPI.benchmark.toFixed(2)}</strong></div>
         </KpiCard>
 
         {/* Ahorro */}
-        <KpiCard label="Ahorro potencial crédito verde" delay={0.12}>
+        <KpiCard label="Ahorro potencial crédito verde">
           <div className="text-3xl font-black text-[#13301F]">{hasData ? `US$ ${fmt(KPI.ahorro)}` : 'US$ 0'}<span className="text-base font-bold text-[rgba(80,108,92,0.45)] ml-1">/año</span></div>
           <div className="text-xs text-[rgba(80,108,92,0.6)] mt-3 inline-flex items-center">
             {hasData ? <>−35 bps con BBVA SLL<TerminoTooltip termino="SLL" /></> : 'Requiere vinculación'}
@@ -220,7 +225,7 @@ export default function DashboardPage() {
         </KpiCard>
 
         {/* Cumplimiento */}
-        <KpiCard label="Progreso de cumplimiento" delay={0.18}>
+        <KpiCard label="Progreso de cumplimiento">
           <div className="text-3xl font-black text-[#13301F]">{hasData ? KPI.cumplimiento.listas : 0}/{KPI.cumplimiento.total}<span className="text-base font-bold text-[rgba(80,108,92,0.45)] ml-1">regulaciones</span></div>
           <div className="mt-3">
             <div className="h-1.5 rounded-full bg-[rgba(90,190,145,0.12)] overflow-hidden">
@@ -229,7 +234,7 @@ export default function DashboardPage() {
             <div className="text-xs text-[rgba(80,108,92,0.6)] mt-1.5">{hasData ? 'activas' : 'pendiente'}</div>
           </div>
         </KpiCard>
-      </div>
+      </motion.div>
 
       {/* Chart + Compliance */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
@@ -346,10 +351,12 @@ export default function DashboardPage() {
   )
 }
 
-function KpiCard({ label, children, delay }: { label: string; children: React.ReactNode; delay: number }) {
+function KpiCard({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }}
+      variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 20 } } }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
       className="bg-white rounded-2xl border border-[rgba(90,190,145,0.12)] p-5 shadow-[0_2px_16px_rgba(90,110,95,0.06)]"
     >
       <div className="text-[11px] font-semibold uppercase tracking-wider text-[rgba(80,108,92,0.5)] mb-2">{label}</div>

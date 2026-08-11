@@ -353,14 +353,16 @@ export default function DashboardShell({ children, onExport }: DashboardShellPro
               </Link>
             )}
 
-            <button
+            <motion.button
               onClick={handleExport}
-              className="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-[#13301F] text-white text-xs font-semibold hover:bg-[#0E2418] active:scale-95 transition-all whitespace-nowrap"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-[#13301F] text-white text-xs font-semibold hover:bg-[#0E2418] transition-all whitespace-nowrap"
             >
               <FileDown className="w-4 h-4" />
               <span className="hidden sm:inline">Exportar reporte PDF</span>
               <span className="sm:hidden">PDF</span>
-            </button>
+            </motion.button>
           </div>
         </header>
 
