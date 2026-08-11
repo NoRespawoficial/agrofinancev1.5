@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import CapybaraBot from '@/components/mascot/CapybaraBot'
 import { cooperativa, certificarCooperativa } from '@/lib/pilotEngine'
-import { useChat } from '@/contexts/ChatContext'
+import { useChat, type Message } from '@/contexts/ChatContext'
 import { saveAnalysisToFirestore } from '@/lib/firebaseService'
 import {
   saveChatMessageToFirestore, getChatHistoryFromFirestore,
@@ -20,23 +20,7 @@ import {
 import { startRecording, type Recorder } from '@/lib/speech'
 import { playKapiNotification } from '@/lib/notificationSound'
 
-type Message = {
-  role: 'user' | 'ai'
-  content: string
-  time: string
-  type?: 'text' | 'insight' | 'alert'
-  imageUrl?: string
-  showAutoload?: boolean
-}
 
-const initialMessages: Message[] = [
-  {
-    role: 'ai',
-    content: '¡Hola! Soy **Kapi**, tu asistente de inteligencia climática 🌱\n\nEstoy conectado a tus datos ESG y puedo ayudarte a:\n- Analizar tus emisiones Scope 1, 2 y 3\n- Generar reportes HC Perú automáticamente\n- Identificar oportunidades de reducción de carbono\n- Responder preguntas sobre tu cumplimiento ESG\n\n¿Por dónde empezamos?',
-    time: 'Ahora',
-    type: 'text',
-  },
-]
 
 const suggestedQuestions = [
   '¿Cuál es mi huella de carbono total?',
@@ -359,11 +343,9 @@ const TIPO_LABEL: Record<string, string> = {
 
 export default function CopilotDrawer() {
   const router = useRouter()
-  const { isChatOpen, closeChat } = useChat()
+  const { isChatOpen, closeChat, messages, setMessages, isTyping, setIsTyping } = useChat()
   const [hasData, setHasData] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
   const [mode, setMode] = useState<'chat' | 'registro'>('chat')
   const [registros, setRegistros] = useState<Registro[]>([])
   const [isRecording, setIsRecording] = useState(false)
