@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import { useRouter } from 'next/navigation';
 import KapiPhone from './KapiPhone';
+import ImpactToggle from '../ui/ImpactToggle';
 
 /**
  * Monta el HTML/CSS estático de la landing de referencia tal cual, y sólo
@@ -15,6 +16,7 @@ export default function ReferenceLandingShell({ styleCss, bodyHtml, scriptJs }) 
   const containerRef = useRef(null);
   const scriptRanOnce = useRef(false);
   const phoneRootRef = useRef(null);
+  const impactToggleRootRef = useRef(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -40,6 +42,13 @@ export default function ReferenceLandingShell({ styleCss, bodyHtml, scriptJs }) 
       if (mountEl) phoneRootRef.current = createRoot(mountEl);
     }
     phoneRootRef.current?.render(<KapiPhone />);
+
+    // Montar el ImpactToggle
+    if (!impactToggleRootRef.current) {
+      const mountEl = document.getElementById('impact-toggle-mount');
+      if (mountEl) impactToggleRootRef.current = createRoot(mountEl);
+    }
+    impactToggleRootRef.current?.render(<ImpactToggle />);
 
     // El script original (ticker, revelado por scroll, demo de subir factura,
     // tabla del plan de reducción) sólo debe correr una vez sobre el DOM.
