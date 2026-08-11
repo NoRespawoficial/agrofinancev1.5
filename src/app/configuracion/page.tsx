@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import DashboardShell from '@/components/layout/DashboardShell'
 import { FE } from '@/lib/emissionFactors'
+import Link from 'next/link'
 import {
   useFuentesDatos, FUENTES_DEMO_INICIALES, fuentesInactivas, ETIQUETA_FUENTE,
   type FuenteDatos,
@@ -143,7 +144,7 @@ export default function ConfiguracionPage() {
             <p className="text-xs text-amber-800 leading-relaxed">
               <strong>Sin {inactivas.map((id) => ETIQUETA_FUENTE[id]).join(' y ')}</strong>, el cálculo de huella ya
               no incluye esos datos: revisa el Scope correspondiente en{' '}
-              <a href="/analisis/?tab=huella" className="underline font-semibold hover:text-amber-900">Análisis</a>{' '}
+              <Link href="/analisis/?tab=huella" className="underline font-semibold hover:text-amber-900">Análisis</Link>{' '}
               — va a haber bajado.
             </p>
           </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Link from 'next/link'
 import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, LineChart, Line,
@@ -11,6 +12,7 @@ import {
   Building2, ArrowRight, FileText, X, Calculator, ChevronRight,
   FileSpreadsheet, ShieldCheck, Search, HelpCircle, AlertTriangle,
 } from 'lucide-react'
+import { useChat } from '@/contexts/ChatContext'
 import DashboardShell from '@/components/layout/DashboardShell'
 import TerminoTooltip from '@/components/ui/TerminoTooltip'
 import {
@@ -290,6 +292,7 @@ export default function AnalisisPage() {
   const [prod, setProd] = useState('todas')
   const [hasData, setHasData] = useState(false)
   const [traza, setTraza] = useState<Trazabilidad | null>(null) // drill-down de trazabilidad
+  const { openChat } = useChat()
 
   useEffect(() => {
     setHasData(localStorage.getItem('agrofinance_has_data') === 'true')
@@ -366,12 +369,12 @@ export default function AnalisisPage() {
                 </p>
               </div>
             </div>
-            <a
+            <Link
               href="/upload/"
               className="flex-shrink-0 inline-block px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#2BA470] to-[#137C53] text-[#FBF4D6] font-bold text-xs shadow-sm hover:brightness-105 active:scale-95 transition-all whitespace-nowrap text-center"
             >
               Cargar datos ➔
-            </a>
+            </Link>
           </motion.div>
         )}
 
@@ -399,7 +402,7 @@ export default function AnalisisPage() {
                   <p className="text-xs text-amber-800 leading-relaxed">
                     Faltan datos de <strong>{inactivas.map((id) => ETIQUETA_FUENTE[id]).join(' y ')}</strong>: estos
                     números ya no incluyen esa fuente. Ve a{' '}
-                    <a href="/configuracion/" className="underline font-semibold hover:text-amber-900">Configuración</a>{' '}
+                    <Link href="/configuracion/" className="underline font-semibold hover:text-amber-900">Configuración</Link>{' '}
                     para volver a vincularla.
                   </p>
                 </div>
@@ -565,9 +568,9 @@ export default function AnalisisPage() {
 
         {/* CTA a Kapi */}
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-          <a href="/copilot/" className="btn-secondary text-sm flex items-center justify-center gap-2 py-3">
+          <button onClick={openChat} className="btn-secondary text-sm flex items-center justify-center gap-2 py-3">
             <FileText className="w-4 h-4" />Preguntar a Kapi sobre estos datos<ArrowRight className="w-4 h-4" />
-          </a>
+          </button>
         </div>
       </div>
 
