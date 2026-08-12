@@ -140,6 +140,16 @@ export default function AgroFinanceLanding() {
   ];
   const [fraseIndex, setFraseIndex] = useState(0);
   const [fraseVisible, setFraseVisible] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (isLoading) { setFraseVisible(false); return; }
@@ -235,7 +245,7 @@ export default function AgroFinanceLanding() {
   return (
     <div className="min-h-screen font-sans text-[#13301F]" style={{ background: '#FBF4D6' }}>
       {/* NAVBAR */}
-      <nav className="flex items-center justify-between gap-4 px-4 sm:px-6 py-3.5 sticky top-0 z-50 bg-[#FBF4D6]/90 backdrop-blur-xl border-b border-[rgba(19,48,31,0.08)]">
+      <nav className={`flex items-center justify-between gap-4 px-4 sm:px-6 py-3.5 sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-[#FBF4D6]/80 backdrop-blur-xl shadow-sm border-b border-[rgba(19,48,31,0.08)] py-2' : 'bg-transparent border-transparent'}`}>
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <Logo height={30} />
         </Link>
@@ -293,14 +303,14 @@ export default function AgroFinanceLanding() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/upload"
-                className="px-8 py-3.5 text-base font-semibold rounded-full hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-lg"
+                className="px-8 py-3.5 text-base font-semibold rounded-full hover:scale-[1.02] hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:shadow-[#5ABE91]/20"
                 style={{ background: '#5ABE91', color: '#0F3D2C' }}
               >
                 Empieza gratis <ArrowRight className="w-5 h-5" />
               </Link>
               <Link
                 href="/dashboard"
-                className="px-8 py-3.5 text-base font-semibold text-white bg-white/10 border border-white/20 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center"
+                className="px-8 py-3.5 text-base font-semibold text-white bg-white/10 border border-white/20 rounded-full hover:bg-white/20 hover:scale-[1.02] hover:border-white/40 transition-all duration-300 flex items-center justify-center shadow-lg"
               >
                 Ver plataforma en acción
               </Link>
@@ -766,7 +776,7 @@ export default function AgroFinanceLanding() {
           <div className="flex flex-wrap items-center gap-4">
             <Link
               href="/plan-reduccion/"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-semibold text-white shadow-lg hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-semibold text-white shadow-lg hover:scale-[1.02] hover:shadow-xl hover:opacity-95 transition-all duration-300"
               style={{ background: '#137C53' }}
             >
               <KapiMark className="w-4 h-4" /> Que Kapi arme el plan <ArrowRight className="w-4 h-4" />
@@ -830,23 +840,25 @@ export default function AgroFinanceLanding() {
                 hidden: { opacity: 0, y: 30 },
                 show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 20 } }
               }}
-              className="relative flex flex-col rounded-3xl border border-[rgba(19,48,31,0.08)] p-8 transition-all duration-300 bg-white"
+              className="h-full"
             >
-              <h3 className="text-xl font-bold text-[#13301F] mb-1">Piloto</h3>
-              <div className="text-3xl font-black text-[#13301F] tracking-tight mb-2">Gratuito</div>
-              <p className="text-sm font-medium text-[rgba(80,108,92,0.6)] mb-8">Ideal para pymes.</p>
-              <ul className="flex-1 space-y-4 mb-8">
-                {['Carga manual Excel', 'Huella Scope 1 y 2', 'Reporte PDF simple'].map((f, j) => (
-                  <li key={j} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-emerald-100/50 flex items-center justify-center shrink-0 mt-0.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#137C53]" />
-                    </div>
-                    <span className="text-sm font-semibold text-[#13301F]/80 leading-snug">{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link href="/dashboard/" className="block w-full py-3 rounded-xl text-sm font-bold text-center transition-all bg-white border border-[rgba(19,48,31,0.15)] text-gray-700 hover:bg-gray-50">
-                Empezar Piloto
+              <Link href="/dashboard/" className="group relative flex flex-col h-full rounded-3xl border border-[rgba(19,48,31,0.08)] p-8 transition-all duration-300 bg-white hover:-translate-y-2 hover:shadow-2xl hover:border-[#137C53]/30 cursor-pointer">
+                <h3 className="text-xl font-bold text-[#13301F] mb-1 group-hover:text-[#137C53] transition-colors">Piloto</h3>
+                <div className="text-3xl font-black text-[#13301F] tracking-tight mb-2">Gratuito</div>
+                <p className="text-sm font-medium text-[rgba(80,108,92,0.6)] mb-8">Ideal para pymes.</p>
+                <ul className="flex-1 space-y-4 mb-8">
+                  {['Carga manual Excel', 'Huella Scope 1 y 2', 'Reporte PDF simple'].map((f, j) => (
+                    <li key={j} className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-emerald-100/50 flex items-center justify-center shrink-0 mt-0.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#137C53]" />
+                      </div>
+                      <span className="text-sm font-semibold text-[#13301F]/80 leading-snug">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-auto block w-full py-3 rounded-xl text-sm font-bold text-center transition-all bg-white border border-[rgba(19,48,31,0.15)] text-gray-700 group-hover:bg-[#137C53] group-hover:text-white group-hover:border-transparent">
+                  Empezar Piloto
+                </div>
               </Link>
             </motion.div>
 
@@ -855,28 +867,30 @@ export default function AgroFinanceLanding() {
                 hidden: { opacity: 0, y: 30 },
                 show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 20 } }
               }}
-              className="relative flex flex-col rounded-3xl border p-8 transition-all duration-300 bg-[#E8F5E9] border-[#10B981]/30 hover:bg-[#D1FAE5] hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]"
+              className="h-full"
             >
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <span className="bg-[#137C53] text-white text-[10px] font-bold uppercase tracking-widest py-1.5 px-4 rounded-full shadow-sm">
-                  Recomendado
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-[#13301F] mb-1">Corporativo</h3>
-              <div className="text-3xl font-black text-[#13301F] tracking-tight mb-2">US$ 199/mes</div>
-              <p className="text-sm font-medium text-[rgba(80,108,92,0.6)] mb-8">Importe neto, excluye IGV estrictamente.</p>
-              <ul className="flex-1 space-y-4 mb-8">
-                {['Lector XML SUNAT', 'Huella Scope 1, 2 y 3', 'Kapi AI Copilot', 'Simulación de Tasa SLL'].map((f, j) => (
-                  <li key={j} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-[#137C53]/10 flex items-center justify-center shrink-0 mt-0.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#137C53]" />
-                    </div>
-                    <span className="text-sm font-semibold text-[#13301F]/90 leading-snug">{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link href="/dashboard/" className="block w-full py-3 rounded-xl text-sm font-bold text-center transition-all bg-[#137C53] text-white hover:bg-[#0F6543] shadow-md border border-transparent">
-                Probar Corporativo
+              <Link href="/dashboard/" className="group relative flex flex-col h-full rounded-3xl border p-8 transition-all duration-300 bg-[#E8F5E9] border-[#10B981]/30 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#10B981]/20 hover:border-[#137C53]/50 cursor-pointer">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-transform duration-300 group-hover:scale-105">
+                  <span className="bg-[#137C53] text-white text-[10px] font-bold uppercase tracking-widest py-1.5 px-4 rounded-full shadow-sm">
+                    Recomendado
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-[#13301F] mb-1 group-hover:text-[#137C53] transition-colors">Corporativo</h3>
+                <div className="text-3xl font-black text-[#13301F] tracking-tight mb-2">US$ 199/mes</div>
+                <p className="text-sm font-medium text-[rgba(80,108,92,0.6)] mb-8">Importe neto, excluye IGV estrictamente.</p>
+                <ul className="flex-1 space-y-4 mb-8">
+                  {['Lector XML SUNAT', 'Huella Scope 1, 2 y 3', 'Kapi AI Copilot', 'Simulación de Tasa SLL'].map((f, j) => (
+                    <li key={j} className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-[#137C53]/10 flex items-center justify-center shrink-0 mt-0.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#137C53]" />
+                      </div>
+                      <span className="text-sm font-semibold text-[#13301F]/90 leading-snug">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-auto block w-full py-3 rounded-xl text-sm font-bold text-center transition-all bg-[#137C53] text-white shadow-md border border-transparent group-hover:bg-[#0F6543] group-hover:shadow-lg group-hover:scale-[1.02]">
+                  Probar Corporativo
+                </div>
               </Link>
             </motion.div>
 
@@ -885,23 +899,25 @@ export default function AgroFinanceLanding() {
                 hidden: { opacity: 0, y: 30 },
                 show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 20 } }
               }}
-              className="relative flex flex-col rounded-3xl border border-[rgba(19,48,31,0.08)] p-8 transition-all duration-300 bg-white"
+              className="h-full"
             >
-              <h3 className="text-xl font-bold text-[#13301F] mb-1">Enterprise</h3>
-              <div className="text-3xl font-black text-[#13301F] tracking-tight mb-2">Personalizado</div>
-              <p className="text-sm font-medium text-[rgba(80,108,92,0.6)] mb-8">Importes netos, sin IGV.</p>
-              <ul className="flex-1 space-y-4 mb-8">
-                {['Integración API ERP', 'Auditoría ISO 14064', 'Conexión a comités bancarios'].map((f, j) => (
-                  <li key={j} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-emerald-100/50 flex items-center justify-center shrink-0 mt-0.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#137C53]" />
-                    </div>
-                    <span className="text-sm font-semibold text-[#13301F]/80 leading-snug">{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link href="/dashboard/" className="block w-full py-3 rounded-xl text-sm font-bold text-center transition-all bg-white border border-[rgba(19,48,31,0.15)] text-gray-700 hover:bg-gray-50">
-                Contactar Ventas
+              <Link href="/dashboard/" className="group relative flex flex-col h-full rounded-3xl border border-[rgba(19,48,31,0.08)] p-8 transition-all duration-300 bg-white hover:-translate-y-2 hover:shadow-2xl hover:border-[#137C53]/30 cursor-pointer">
+                <h3 className="text-xl font-bold text-[#13301F] mb-1 group-hover:text-[#137C53] transition-colors">Enterprise</h3>
+                <div className="text-3xl font-black text-[#13301F] tracking-tight mb-2">Personalizado</div>
+                <p className="text-sm font-medium text-[rgba(80,108,92,0.6)] mb-8">Importes netos, sin IGV.</p>
+                <ul className="flex-1 space-y-4 mb-8">
+                  {['Integración API ERP', 'Auditoría ISO 14064', 'Conexión a comités bancarios'].map((f, j) => (
+                    <li key={j} className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full bg-emerald-100/50 flex items-center justify-center shrink-0 mt-0.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#137C53]" />
+                      </div>
+                      <span className="text-sm font-semibold text-[#13301F]/80 leading-snug">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-auto block w-full py-3 rounded-xl text-sm font-bold text-center transition-all bg-white border border-[rgba(19,48,31,0.15)] text-gray-700 group-hover:bg-[#137C53] group-hover:text-white group-hover:border-transparent">
+                  Contactar Ventas
+                </div>
               </Link>
             </motion.div>
           </motion.div>
@@ -1010,7 +1026,7 @@ export default function AgroFinanceLanding() {
 
                   <button
                     type="submit"
-                    className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg transition-colors text-sm"
+                    className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 hover:scale-[1.02] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 text-sm"
                   >
                     Confirmar solicitud de demo
                   </button>

@@ -37,7 +37,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   /* Va aquí y no en <body>: si el body recorta el overflow se vuelve un
      segundo contenedor de scroll y los enlaces #ancla dejan de saltar. */
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
