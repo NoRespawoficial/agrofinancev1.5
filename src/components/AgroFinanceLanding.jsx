@@ -815,49 +815,96 @@ export default function AgroFinanceLanding() {
             Tres servicios que puede contratar juntos o por separado, según lo que su operación necesite hoy.
           </p>
 
-          <div className="mb-10 rounded-3xl p-8 md:p-10" style={{ background: '#0F3D2C' }}>
-            <div className="flex flex-col lg:flex-row lg:items-center gap-8 text-white">
-              <div className="flex-1">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-white text-xs font-bold uppercase tracking-wider mb-4" style={{ background: '#137C53' }}>
-                  <Sparkles className="w-3.5 h-3.5" /> Plan gratuito
-                </span>
-                <h3 className="text-2xl md:text-3xl font-bold mb-3">Pruébelo completo hoy. Sin comercial de por medio.</h3>
-                <p className="text-white/70 mb-6 max-w-xl text-sm">
-                  No le pedimos que solicite una demo y espere días a que alguien la apruebe. Entra, calcula su huella con datos de prueba y se lleva el reporte. Gratis, de verdad.
-                </p>
-                <div className="grid sm:grid-cols-2 gap-x-8 gap-y-2.5">
-                  {['Alcance 1, 2 y 3 completo', 'Todos los tableros y gráficos', 'Descarga en PDF, Excel y CSV', 'Kapi AI para resolver sus dudas'].map((item) => (
-                    <div key={item} className="flex items-start gap-2 text-sm font-medium">
-                      <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" style={{ color: '#5ABE91' }} /> {item}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              show: { opacity: 1, transition: { staggerChildren: 0.15 } }
+            }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-10 mb-10"
+          >
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 20 } }
+              }}
+              className="relative flex flex-col rounded-3xl border border-[rgba(19,48,31,0.08)] p-8 transition-all duration-300 bg-white"
+            >
+              <h3 className="text-xl font-bold text-[#13301F] mb-1">Piloto</h3>
+              <div className="text-3xl font-black text-[#13301F] tracking-tight mb-2">Gratuito</div>
+              <p className="text-sm font-medium text-[rgba(80,108,92,0.6)] mb-8">Ideal para pymes.</p>
+              <ul className="flex-1 space-y-4 mb-8">
+                {['Carga manual Excel', 'Huella Scope 1 y 2', 'Reporte PDF simple'].map((f, j) => (
+                  <li key={j} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-emerald-100/50 flex items-center justify-center shrink-0 mt-0.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#137C53]" />
                     </div>
-                  ))}
-                </div>
-              </div>
-              <div className="lg:w-64 shrink-0 lg:border-l lg:border-white/15 lg:pl-8">
-                <div className="text-4xl font-extrabold">US$ 0</div>
-                <p className="text-sm text-white/50 mb-5">Sin tarjeta. Sin registro obligatorio.</p>
-                <Link
-                  href="/dashboard/"
-                  className="flex items-center justify-center gap-2 w-full px-6 py-3.5 text-[#0F3D2C] font-bold rounded-xl transition-colors shadow-lg"
-                  style={{ background: '#5ABE91' }}
-                >
-                  Entrar a la plataforma <ArrowRight className="w-4 h-4" />
-                </Link>
-                <p className="text-[11px] text-white/40 mt-3 text-center">
-                  Los reportes del plan gratuito llevan marca de agua.
-                </p>
-              </div>
-            </div>
-          </div>
+                    <span className="text-sm font-semibold text-[#13301F]/80 leading-snug">{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/dashboard/" className="block w-full py-3 rounded-xl text-sm font-bold text-center transition-all bg-white border border-[rgba(19,48,31,0.15)] text-gray-700 hover:bg-gray-50">
+                Empezar Piloto
+              </Link>
+            </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <PriceCard icon={Bot} titulo="Captura de campo" texto="Su operario registra información directo desde el campo, por WhatsApp: foto, audio o texto. Sin apps que instalar, sin capacitación." items={['Registro por foto, audio o texto', 'Sincroniza cuando hay señal', 'Cero curva de aprendizaje']} footer="Incluido con Centralización" />
-            <PriceCard icon={LineChart} destacado titulo="Centralización y digitalización" texto="Unifica cuadernos, Excel y data dispersa en un solo lugar. Por hectárea o por módulo, para exportadoras o cualquier empresa agro." items={['Un solo panel para toda su operación', 'Precio por hectárea o por módulo', 'Sin depender de Excel ni papel']} footer="$1,000 – $10,000 / año" />
-            <PriceCard icon={Leaf} titulo="Cálculo de huella de carbono" texto="Clasificación de emisiones por Alcance 1, 2 y 3, con reportes listos para certificadoras y bancos." items={['Alcance 1, 2 y 3 (según plan)', 'Reportes listos para auditoría', 'Dossier para su Crédito Verde']} footer="$300 – $10,000 / año" />
-          </div>
-          <p className="text-xs text-[rgba(19,48,31,0.4)] mt-8">
-            Rangos de referencia según benchmark del mercado (ERPs agro, consultoras y SaaS de huella de carbono). Precio final según alcance y tamaño de su operación.
-          </p>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 20 } }
+              }}
+              className="relative flex flex-col rounded-3xl border p-8 transition-all duration-300 bg-[#E8F5E9] border-[#10B981]/30 hover:bg-[#D1FAE5] hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]"
+            >
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <span className="bg-[#137C53] text-white text-[10px] font-bold uppercase tracking-widest py-1.5 px-4 rounded-full shadow-sm">
+                  Recomendado
+                </span>
+              </div>
+              <h3 className="text-xl font-bold text-[#13301F] mb-1">Corporativo</h3>
+              <div className="text-3xl font-black text-[#13301F] tracking-tight mb-2">US$ 199/mes</div>
+              <p className="text-sm font-medium text-[rgba(80,108,92,0.6)] mb-8">Importe neto, excluye IGV estrictamente.</p>
+              <ul className="flex-1 space-y-4 mb-8">
+                {['Lector XML SUNAT', 'Huella Scope 1, 2 y 3', 'Kapi AI Copilot', 'Simulación de Tasa SLL'].map((f, j) => (
+                  <li key={j} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-[#137C53]/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#137C53]" />
+                    </div>
+                    <span className="text-sm font-semibold text-[#13301F]/90 leading-snug">{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/dashboard/" className="block w-full py-3 rounded-xl text-sm font-bold text-center transition-all bg-[#137C53] text-white hover:bg-[#0F6543] shadow-md border border-transparent">
+                Probar Corporativo
+              </Link>
+            </motion.div>
+
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 20 } }
+              }}
+              className="relative flex flex-col rounded-3xl border border-[rgba(19,48,31,0.08)] p-8 transition-all duration-300 bg-white"
+            >
+              <h3 className="text-xl font-bold text-[#13301F] mb-1">Enterprise</h3>
+              <div className="text-3xl font-black text-[#13301F] tracking-tight mb-2">Personalizado</div>
+              <p className="text-sm font-medium text-[rgba(80,108,92,0.6)] mb-8">Importes netos, sin IGV.</p>
+              <ul className="flex-1 space-y-4 mb-8">
+                {['Integración API ERP', 'Auditoría ISO 14064', 'Conexión a comités bancarios'].map((f, j) => (
+                  <li key={j} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-emerald-100/50 flex items-center justify-center shrink-0 mt-0.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#137C53]" />
+                    </div>
+                    <span className="text-sm font-semibold text-[#13301F]/80 leading-snug">{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/dashboard/" className="block w-full py-3 rounded-xl text-sm font-bold text-center transition-all bg-white border border-[rgba(19,48,31,0.15)] text-gray-700 hover:bg-gray-50">
+                Contactar Ventas
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
